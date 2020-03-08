@@ -83,7 +83,7 @@ enterButton.onclick = ()=>{
         cardSerectArea.appendChild(passage2);
         */
         for(var i=0;i<24;i++){
-          if(person1[i]===1 && person2===1){
+          if(person1[i]===1 && person2[i]===1){
             alert('Error 重複がありました。リロードして初めからやり直してください');
             break;
           }
