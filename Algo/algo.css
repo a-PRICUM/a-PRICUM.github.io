@@ -1,0 +1,26 @@
+.blackNot,.whiteNot,.blackSerected,.whiteSerected{
+  width: 100%;
+}
+.blackNot{
+  color: #dfe7ee;
+  background-color: #001b22;
+  border-color: #001b22;
+}
+.whiteNot{
+  color: #001b22;
+  background-color: #dfe7ee;
+  border-color: #dfe7ee;
+}
+.blackSerected{
+  color: #dfe7ee;
+  background-color: #001b22;
+  border-color: #fc0008;
+}
+.whiteSerected{
+  color: #001b22;
+  background-color: #dfe7ee;
+  border-color: #fc0008;
+}
+.error{
+  color: #fc0008;
+}
