@@ -25,7 +25,6 @@ const white11 = document.getElementById('white11');
 
 const enterButton = document.getElementById('enter');
 
-
 var person1 = [];//black0~11,white0~11 1->Serected
 var person2 = [];//black0~11,white0~11 1->Serected
 for(var i=0;i<24;i++){
@@ -66,6 +65,7 @@ enterButton.onclick = ()=>{
     serectCard(person2);
     enterButton.onclick = ()=>{
       if(countSerected===8){
+        /*
         const passage = document.createElement('p');
         message = person1[0];
         for(var i=1;i<24;i++){
@@ -81,6 +81,13 @@ enterButton.onclick = ()=>{
         }
         passage2.innerText = message;
         cardSerectArea.appendChild(passage2);
+        */
+        for(var i=0;i<24;i++){
+          if(person1[i] == person2[i]){
+            alert('Error 重複がありました。リロードして初めからやり直してください');
+            break;
+          }
+        }
       }else{
         count.className = 'error';
       }
@@ -89,10 +96,6 @@ enterButton.onclick = ()=>{
     count.className = 'error';
   }
 }
-
-
-
-
 
 
 
