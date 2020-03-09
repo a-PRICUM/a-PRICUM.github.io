@@ -23,6 +23,7 @@ const white9 = document.getElementById('white9');
 const white10 = document.getElementById('white10');
 const white11 = document.getElementById('white11');
 const enterButton = document.getElementById('enter');
+const gameArea = document.getElementById('gameArea');
 
 var person1 = [];//black0~11,white0~11 1->Serected
 var person2 = [];//black0~11,white0~11 1->Serected
@@ -31,6 +32,8 @@ for(var i=0;i<24;i++){
   person2.push(0);
 }
 var countSerected = 0;
+var player = [];//black0~11,white0~11 1->Serected
+var playerStatus = [];//0->close 1->open
 
 resetCardButtonClass();
 serectCardList(person1);
@@ -54,11 +57,10 @@ enterButton.onclick = ()=>{
           if(person1[i]===1 && person2[i]===1){
             alert('Error 重複がありました。リロードして１人目のプレイヤーの入力からやり直してください');
             break;
-          }else{
-            removeAllChildren(cardSerectArea);
-            //TODO ゲーム画面作る関数
           }
         }
+        removeAllChildren(cardSerectArea);
+        gamePart();
       }else{
         count.className = 'error';
       }
@@ -69,7 +71,52 @@ enterButton.onclick = ()=>{
 }
 
 
+function gamePart(){
+  for (var i=0;i<24;i++){
+    if(person1[i]===0 && person2[i]===0){
+      player.push(1);
+      console.log(1 + ',');
+    }else{
+      player.push(0);
+    }
+  }
+  cardOutput();
+}
 
+
+function cardOutput(){
+  const table = document.createElement('table');
+  const tr = document.createElement('tr');
+
+  gameArea.appendChild(table);
+  table.appendChild(tr);
+  for(var i=0;i<12;i++){
+    if(player[i]==1){
+      const button = document.createElement('button');
+      const th = document.createElement('th');
+      tr.appendChild(th);
+      button.className = 'blackNot';
+      if(playerStatus[i]===1){
+        button.innerText = i;
+      }else{
+        button.innerText = null;
+      }
+      th.appendChild(button);
+    }
+    if(player[i+12]==1){
+      const button = document.createElement('button');
+      const th = document.createElement('th');
+      tr.appendChild(th);
+      button.className = 'whiteNot';
+      if(playerStatus[i+12]===1){
+        button.innerText = i;
+      }else{
+        button.innerText = null;
+      }
+      th.appendChild(button);
+    }
+  }
+}
 
 
 function resetCardButtonClass(){
