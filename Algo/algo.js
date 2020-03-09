@@ -112,14 +112,8 @@ function gamePart(){
 
 
 function cardOutput(){
-  const table = document.createElement('table');
-  const tr = document.createElement('tr');
-  gameArea.appendChild(table);
-  table.appendChild(tr);
   var message = 'プレイヤーの手持ち:';
   for(var i=0;i<8;i++){
-    const th = document.createElement('th');
-    tr.appendChild(th);
     const button = document.createElement('button');
     if(playerCards[i].color===0){
       button.className = 'blackNot';
@@ -129,7 +123,7 @@ function cardOutput(){
     if(playerCards[i].status === 1){
       button.innerText = playerCards[i].num;
     }
-    th.appendChild(button);
+    gameArea.appendChild(button);
     switch (i) {
       case 0:card1 = button;
              break;
@@ -148,7 +142,6 @@ function cardOutput(){
       case 7:card8 = button;
              break;
     }
-
     message += ' ' + playerCards[i].num;
   }
 
