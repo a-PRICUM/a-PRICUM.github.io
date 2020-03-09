@@ -83,10 +83,7 @@ function assessment(userName){
 }
 
 
-/**
- * 指定した要素の子要素をすべて削除する
- * @param {HTMLElement} element HTMLの要素
-*/
+
 function removeAllChildren(element){
   while(element.firstChild){//子要素があるときこれを削除
     element.removeChild(element.firstChild);

@@ -22,7 +22,6 @@ const white8 = document.getElementById('white8');
 const white9 = document.getElementById('white9');
 const white10 = document.getElementById('white10');
 const white11 = document.getElementById('white11');
-
 const enterButton = document.getElementById('enter');
 
 var person1 = [];//black0~11,white0~11 1->Serected
@@ -33,10 +32,11 @@ for(var i=0;i<24;i++){
 }
 
 var countSerected = 0;
-serectCard(person1);
+serectCardList(person1);
 enterButton.onclick = ()=>{
   if(countSerected===8){
     player.innerText = '２人目のプレイヤー';
+    message.innerText = '２人目のプレイヤーに端末を渡してください';
     countSerected = 0;
     black0.className = 'blackNot';
     black1.className = 'blackNot';
@@ -62,7 +62,7 @@ enterButton.onclick = ()=>{
     white9.className = 'whiteNot';
     white10.className = 'whiteNot';
     white11.className = 'whiteNot';
-    serectCard(person2);
+    serectCardList(person2);
     enterButton.onclick = ()=>{
       if(countSerected===8){
         /*
@@ -82,10 +82,21 @@ enterButton.onclick = ()=>{
         passage2.innerText = message;
         cardSerectArea.appendChild(passage2);
         */
+        var message = 'person1: ';
+        var message2 = 'person2: ';
+        for(var i=1;i<24;i++){
+          message += ','+person1[i];
+          message2 += ',' + person2[i];
+        }
+        console.log(message);
+        console.log(message2);
         for(var i=0;i<24;i++){
           if(person1[i]===1 && person2[i]===1){
             alert('Error 重複がありました。リロードして初めからやり直してください');
             break;
+          }else{
+            removeAllChildren(cardSerectArea);
+            //TODO ゲーム画面作る関数
           }
         }
       }else{
@@ -103,7 +114,7 @@ enterButton.onclick = ()=>{
 
 
 
-function serectCard(cardList){
+function serectCardList(cardList){
   black0.onclick = ()=>{cardList[0] = buttonOnClick(black0)};
   black1.onclick = ()=>{cardList[1] = buttonOnClick(black1)};
   black2.onclick = ()=>{cardList[2] = buttonOnClick(black2)};
@@ -130,7 +141,11 @@ function serectCard(cardList){
   white11.onclick = ()=>{cardList[23] = buttonOnClick(white11)};
 }
 
-//カードボタンが押されたときの処理
+/**
+ * カードボタンが押されたときの処理
+ * @param {HTMLElement} buttonName 押されたボタンの名前(？)
+ * @return {number} Serectedなら1, Notなら2を返す
+*/
 function buttonOnClick(buttonName){
   count.className = 'none';
   switch (buttonName.className) {
