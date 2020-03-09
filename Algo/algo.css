@@ -1,5 +1,8 @@
 .blackNot,.whiteNot,.blackSerected,.whiteSerected{
-  width: 100%;
+  border-width: 2.5px;
+  font-size: 20px;
+  height: 55px;
+  width: 40px;
 }
 .blackNot{
   color: #dfe7ee;
