@@ -36,6 +36,20 @@ var countSerected = 0;
 var player = [];//black0~11,white0~11 1->Serected
 var playerCards=[];
 
+function addCard(_num, _color,_status) {
+          this.num = _num;
+          this.color = _color;//0->black 1->white
+          this.status = _status;//0->close 1->open
+}
+
+
+
+
+
+
+
+
+
 resetCardButtonClass();
 serectCardList(person1);
 enterButton.onclick = ()=>{
@@ -71,11 +85,6 @@ enterButton.onclick = ()=>{
   }
 }
 
-function addCard(_num, _color,_status) {
-          this.num = _num;
-          this.color = _color;
-          this.status = _status;
-}
 
 function gamePart(){
   var count = 0;
