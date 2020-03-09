@@ -24,6 +24,7 @@ const white10 = document.getElementById('white10');
 const white11 = document.getElementById('white11');
 const enterButton = document.getElementById('enter');
 const gameArea = document.getElementById('gameArea');
+var card1,card2,card3,card4,card5,card6,card7,card8;
 
 var person1 = [];//black0~11,white0~11 1->Serected
 var person2 = [];//black0~11,white0~11 1->Serected
@@ -33,7 +34,7 @@ for(var i=0;i<24;i++){
 }
 var countSerected = 0;
 var player = [];//black0~11,white0~11 1->Serected
-var playerStatus = [];//0->close 1->open
+var playerCards=[];
 
 resetCardButtonClass();
 serectCardList(person1);
@@ -70,54 +71,79 @@ enterButton.onclick = ()=>{
   }
 }
 
+function addCard(_num, _color,_status) {
+          this.num = _num;
+          this.color = _color;
+          this.status = _status;
+}
 
 function gamePart(){
-  for (var i=0;i<24;i++){
+  var count = 0;
+  for(var i=0;i<12;i++){
     if(person1[i]===0 && person2[i]===0){
-      player.push(1);
-      console.log(1 + ',');
-    }else{
-      player.push(0);
+      var num = i;
+      var color = 0;
+      var status = 0;
+      playerCards[count] = new addCard(num,color,status);
+      count++;
+    }
+    if(person1[i+12]===0 && person2[i+12]===0){
+      var num = i;
+      var color = 1;
+      var status = 0;
+      playerCards[count] = new addCard(num,color,status);
+      count++;
     }
   }
+
   cardOutput();
+
+
 }
 
 
 function cardOutput(){
   const table = document.createElement('table');
   const tr = document.createElement('tr');
-
   gameArea.appendChild(table);
   table.appendChild(tr);
-  for(var i=0;i<12;i++){
-    if(player[i]==1){
-      const button = document.createElement('button');
-      const th = document.createElement('th');
-      tr.appendChild(th);
+  var message = 'プレイヤーの手持ち:';
+  for(var i=0;i<8;i++){
+    const th = document.createElement('th');
+    tr.appendChild(th);
+    const button = document.createElement('button');
+    if(playerCards[i].color===0){
       button.className = 'blackNot';
-      if(playerStatus[i]===1){
-        button.innerText = i;
-      }else{
-        button.innerText = null;
-      }
-      th.appendChild(button);
-      console.log(i + 'b,');
-    }
-    if(player[i+12]==1){
-      const button = document.createElement('button');
-      const th = document.createElement('th');
-      tr.appendChild(th);
+    }else{
       button.className = 'whiteNot';
-      if(playerStatus[i+12]===1){
-        button.innerText = i;
-      }else{
-        button.innerText = null;
-      }
-      th.appendChild(button);
-      console.log(i + 'w,')
     }
+    if(playerCards[i].status === 1){
+      button.innerText = playerCards[i].num;
+    }
+    th.appendChild(button);
+    switch (i) {
+      case 0:card1 = button;
+             break;
+      case 1:card2 = button;
+             break;
+      case 2:card3 = button;
+             break;
+      case 3:card4 = button;
+             break;
+      case 4:card5 = button;
+             break;
+      case 5:card6 = button;
+             break;
+      case 6:card7 = button;
+             break;
+      case 7:card8 = button;
+             break;
+    }
+
+    message += ' ' + playerCards[i].num;
   }
+
+  console.log(message);
 }
 
 
