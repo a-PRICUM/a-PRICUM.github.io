@@ -102,6 +102,7 @@ function cardOutput(){
         button.innerText = null;
       }
       th.appendChild(button);
+      console.log(i + 'b,');
     }
     if(player[i+12]==1){
       const button = document.createElement('button');
@@ -114,6 +115,7 @@ function cardOutput(){
         button.innerText = null;
       }
       th.appendChild(button);
+      console.log(i + 'w,')
     }
   }
 }
