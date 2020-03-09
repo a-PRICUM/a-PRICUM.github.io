@@ -30,63 +30,23 @@ for(var i=0;i<24;i++){
   person1.push(0);
   person2.push(0);
 }
-
 var countSerected = 0;
+
+resetCardButtonClass();
 serectCardList(person1);
 enterButton.onclick = ()=>{
   if(countSerected===8){
     player.innerText = '２人目のプレイヤー';
     message.innerText = '２人目のプレイヤーに端末を渡してください';
-    countSerected = 0;
-    black0.className = 'blackNot';
-    black1.className = 'blackNot';
-    black2.className = 'blackNot';
-    black3.className = 'blackNot';
-    black4.className = 'blackNot';
-    black5.className = 'blackNot';
-    black6.className = 'blackNot';
-    black7.className = 'blackNot';
-    black8.className = 'blackNot';
-    black9.className = 'blackNot';
-    black10.className = 'blackNot';
-    black11.className = 'blackNot';
-    white0.className = 'whiteNot';
-    white1.className = 'whiteNot';
-    white2.className = 'whiteNot';
-    white3.className = 'whiteNot';
-    white4.className = 'whiteNot';
-    white5.className = 'whiteNot';
-    white6.className = 'whiteNot';
-    white7.className = 'whiteNot';
-    white8.className = 'whiteNot';
-    white9.className = 'whiteNot';
-    white10.className = 'whiteNot';
-    white11.className = 'whiteNot';
+    resetCardButtonClass();
     serectCardList(person2);
     enterButton.onclick = ()=>{
       if(countSerected===8){
-        /*
-        const passage = document.createElement('p');
-        message = person1[0];
-        for(var i=1;i<24;i++){
-          message += ','+person1[i];
-        }
-        passage.innerText = message;
-        cardSerectArea.appendChild(passage);
-
-        const passage2 = document.createElement('p');
-        message = person2[0];
-        for(var i=1;i<24;i++){
-          message += ','+person2[i];
-        }
-        passage2.innerText = message;
-        cardSerectArea.appendChild(passage2);
-        */
-        var message = 'person1: ';
-        var message2 = 'person2: ';
-        for(var i=1;i<24;i++){
-          message += ','+person1[i];
-          message2 += ',' + person2[i];
+        var message = 'person1:';
+        var message2 = 'person2:';
+        for(var i=0;i<24;i++){
+          message += ' ' + person1[i];
+          message2 += ' ' + person2[i];
         }
         console.log(message);
         console.log(message2);
@@ -112,7 +72,34 @@ enterButton.onclick = ()=>{
 
 
 
-
+function resetCardButtonClass(){
+  countSerected = 0;
+  black0.className = 'blackNot';
+  black1.className = 'blackNot';
+  black2.className = 'blackNot';
+  black3.className = 'blackNot';
+  black4.className = 'blackNot';
+  black5.className = 'blackNot';
+  black6.className = 'blackNot';
+  black7.className = 'blackNot';
+  black8.className = 'blackNot';
+  black9.className = 'blackNot';
+  black10.className = 'blackNot';
+  black11.className = 'blackNot';
+  white0.className = 'whiteNot';
+  white1.className = 'whiteNot';
+  white2.className = 'whiteNot';
+  white3.className = 'whiteNot';
+  white4.className = 'whiteNot';
+  white5.className = 'whiteNot';
+  white6.className = 'whiteNot';
+  white7.className = 'whiteNot';
+  white8.className = 'whiteNot';
+  white9.className = 'whiteNot';
+  white10.className = 'whiteNot';
+  white11.className = 'whiteNot';
+  return;
+}
 
 function serectCardList(cardList){
   black0.onclick = ()=>{cardList[0] = buttonOnClick(black0)};
