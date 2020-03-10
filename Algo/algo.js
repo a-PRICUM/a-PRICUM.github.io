@@ -211,7 +211,7 @@ var gamePart = {
     removeAllChildren(messageArea);
     if(status===1){
       const text = document.createElement('h4');
-      text.innerText = 'このカードの数字は？';
+      text.innerText = 'このカードの数字は？(半角数字で入力)';
       messageArea.appendChild(text);
       const input = document.createElement('input');
       input.setAttribute('type','text');
