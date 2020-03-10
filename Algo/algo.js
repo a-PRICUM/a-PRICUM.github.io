@@ -24,6 +24,8 @@ const white10 = document.getElementById('white10');
 const white11 = document.getElementById('white11');
 const enterButton = document.getElementById('enter');
 const gameArea = document.getElementById('gameArea');
+const cardArea = document.getElementById('cardArea');
+const messageArea = document.getElementById('messageArea');
 var card1,card2,card3,card4,card5,card6,card7,card8;
 
 var person1 = [];//black0~11,white0~11 1->Serected
@@ -34,30 +36,204 @@ for(var i=0;i<24;i++){
 }
 var countSerected = 0;
 var player = [];//black0~11,white0~11 1->Serected
-var playerCards=[];
+var playerCards=[0,0,0,0,0,0,0,0];
 
-function addCard(_num, _color,_status) {
-          this.num = _num;
-          this.color = _color;//0->black 1->white
-          this.status = _status;//0->close 1->open
+
+
+var cardSerect = {
+  classReset:function (){
+    countSerected = 0;
+    black0.className = 'blackNot';
+    black1.className = 'blackNot';
+    black2.className = 'blackNot';
+    black3.className = 'blackNot';
+    black4.className = 'blackNot';
+    black5.className = 'blackNot';
+    black6.className = 'blackNot';
+    black7.className = 'blackNot';
+    black8.className = 'blackNot';
+    black9.className = 'blackNot';
+    black10.className = 'blackNot';
+    black11.className = 'blackNot';
+    white0.className = 'whiteNot';
+    white1.className = 'whiteNot';
+    white2.className = 'whiteNot';
+    white3.className = 'whiteNot';
+    white4.className = 'whiteNot';
+    white5.className = 'whiteNot';
+    white6.className = 'whiteNot';
+    white7.className = 'whiteNot';
+    white8.className = 'whiteNot';
+    white9.className = 'whiteNot';
+    white10.className = 'whiteNot';
+    white11.className = 'whiteNot';
+  },
+  inputOnclickFunc:function (cardList){
+    black0.onclick = ()=>{cardList[0] = this.cardButtonOnclick(black0)};
+    black1.onclick = ()=>{cardList[1] = this.cardButtonOnclick(black1)};
+    black2.onclick = ()=>{cardList[2] = this.cardButtonOnclick(black2)};
+    black3.onclick = ()=>{cardList[3] = this.cardButtonOnclick(black3)};
+    black4.onclick = ()=>{cardList[4] = this.cardButtonOnclick(black4)};
+    black5.onclick = ()=>{cardList[5] = this.cardButtonOnclick(black5)};
+    black6.onclick = ()=>{cardList[6] = this.cardButtonOnclick(black6)};
+    black7.onclick = ()=>{cardList[7] = this.cardButtonOnclick(black7)};
+    black8.onclick = ()=>{cardList[8] = this.cardButtonOnclick(black8)};
+    black9.onclick = ()=>{cardList[9] = this.cardButtonOnclick(black9)};
+    black10.onclick = ()=>{cardList[10] = this.cardButtonOnclick(black10)};
+    black11.onclick = ()=>{cardList[11] = this.cardButtonOnclick(black11)};
+    white0.onclick = ()=>{cardList[12] = this.cardButtonOnclick(white0)};
+    white1.onclick = ()=>{cardList[13] = this.cardButtonOnclick(white1)};
+    white2.onclick = ()=>{cardList[14] = this.cardButtonOnclick(white2)};
+    white3.onclick = ()=>{cardList[15] = this.cardButtonOnclick(white3)};
+    white4.onclick = ()=>{cardList[16] = this.cardButtonOnclick(white4)};
+    white5.onclick = ()=>{cardList[17] = this.cardButtonOnclick(white5)};
+    white6.onclick = ()=>{cardList[18] = this.cardButtonOnclick(white6)};
+    white7.onclick = ()=>{cardList[19] = this.cardButtonOnclick(white7)};
+    white8.onclick = ()=>{cardList[20] = this.cardButtonOnclick(white8)};
+    white9.onclick = ()=>{cardList[21] = this.cardButtonOnclick(white9)};
+    white10.onclick = ()=>{cardList[22] = this.cardButtonOnclick(white10)};
+    white11.onclick = ()=>{cardList[23] = this.cardButtonOnclick(white11)};
+  },
+  cardButtonOnclick:function (buttonName){
+    /**
+     * カードボタンが押されたときの処理
+     * @param {HTMLElement} buttonName 押されたボタンの名前(？)
+     * @return {number} Serectedなら1, Notなら2を返す
+    */
+    count.className = 'none';
+    switch (buttonName.className) {
+      case 'blackNot':buttonName.className = 'blackSerected';
+                      countSerected++;
+                      break;
+      case 'blackSerected':buttonName.className = 'blackNot';
+                      countSerected--;
+                      break;
+      case 'whiteNot':buttonName.className = 'whiteSerected';
+                      countSerected++;
+                      break;
+      case 'whiteSerected':buttonName.className = 'whiteNot';
+                      countSerected--;
+                      break;
+      default:console.log('Error Not<=>Serected変換 ' + buttonName.id);
+    }
+    if(countSerected===0){
+      count.innerText = '手持ちのカードを選択してください';
+    }else if(countSerected===8){
+      count.innerText = '選択したカードが合っているか確認して決定を押してください';
+    }else if(countSerected<8){
+      count.innerText = 'あと'+(8-countSerected)+'枚選択してください';
+    }else{
+      count.innerText = (countSerected-8)+'枚オーバーしています。確認し直してください';
+    }
+
+    if(buttonName.className=='blackSerected' || buttonName.className=='whiteSerected'){
+      return 1;
+    }else{
+      return 0;
+    }
+  },
+}
+
+var gamePart = {
+  start:function (){
+    var count = 0;
+    for(var i=0;i<12;i++){
+      if(person1[i]===0 && person2[i]===0){
+        var num = i;
+        var color = 0;
+        var status = 0;
+        playerCards[count] = new this.makeCardObject(num,color,status);
+        count++;
+      }
+      if(person1[i+12]===0 && person2[i+12]===0){
+        var num = i;
+        var color = 1;
+        var status = 0;
+        playerCards[count] = new this.makeCardObject(num,color,status);
+        count++;
+      }
+    }
+
+    this.cardOutput();
+    console.log(playerCards[0].element.className);
+    this.inputOnclickFunc();
+  },
+  makeCardObject:function (_num, _color,_status) {
+            this.element = null;
+            this.num = _num;
+            this.color = _color;//0->black 1->white
+            this.status = _status;//0->close 1->open
+  },
+  cardOutput:function (){
+    var message = 'プレイヤーの手持ち:';
+    for(var i=0;i<8;i++){
+      const button = document.createElement('button');
+      if(playerCards[i].color===0){
+        button.className = 'blackNot';
+      }else{
+        button.className = 'whiteNot';
+      }
+      if(playerCards[i].status === 1){
+        button.innerText = playerCards[i].num;
+      }
+      cardArea.appendChild(button);
+      playerCards[i].element = button;
+
+    }
+  },
+  cardButtonOnclick:function (num){
+    var status = 0;
+    switch (playerCards[num].element.className){
+      case 'blackNot':playerCards[num].element.className = 'blackSerected';
+                      status = 1;
+                      break;
+      case 'whiteNot':playerCards[num].element.className = 'whiteSerected';
+                      status = 1;
+                      break;
+      case 'blackSerected':playerCards[num].element.className = 'blackNot';
+                      break;
+      case 'whiteSerected':playerCards[num].element.className = 'whiteNot';
+                      break;
+      default:console.log('Error Not<=>Serected変換 ' + playerCards[num].element.id);
+    }
+    for(var i=0;i<8;i++){
+      if(i != num){
+        if(playerCards[i].color === 0){
+          console.log( i + ':'+num+playerCards[i].element.className);
+        }else{
+          console.log(i + ':' +num+playerCards[i].element.className);
+        }
+      }
+    }
+    //TODO message
+    return;
+  },
+  inputOnclickFunc:function(){
+    playerCards[0].element.onclick = ()=>{this.cardButtonOnclick(0);};
+    playerCards[1].element.onclick = ()=>{this.cardButtonOnclick(1);};
+    playerCards[2].element.onclick = ()=>{this.cardButtonOnclick(2);};
+    playerCards[3].element.onclick = ()=>{this.cardButtonOnclick(3);};
+    playerCards[4].element.onclick = ()=>{this.cardButtonOnclick(4);};
+    playerCards[5].element.onclick = ()=>{this.cardButtonOnclick(5);};
+    playerCards[6].element.onclick = ()=>{this.cardButtonOnclick(6);};
+    playerCards[7].element.onclick = ()=>{this.cardButtonOnclick(7);};
+  },
+  clear:function(){
+    removeAllChildren(cardArea);
+    removeAllChildren(messageArea);
+  }
 }
 
 
 
-
-
-
-
-
-
-resetCardButtonClass();
-serectCardList(person1);
+cardSerect.classReset();
+cardSerect.inputOnclickFunc(person1);
 enterButton.onclick = ()=>{
   if(countSerected===8){
-    player.innerText = '２人目のプレイヤー';
+    playerName.innerText = '２人目のプレイヤー';
     message.innerText = '２人目のプレイヤーに端末を渡してください';
-    resetCardButtonClass();
-    serectCardList(person2);
+    cardSerect.classReset();
+    cardSerect.inputOnclickFunc(person2);
     enterButton.onclick = ()=>{
       if(countSerected===8){
         var message = 'person1:';
@@ -75,7 +251,7 @@ enterButton.onclick = ()=>{
           }
         }
         removeAllChildren(cardSerectArea);
-        gamePart();
+        gamePart.start();
       }else{
         count.className = 'error';
       }
@@ -86,163 +262,18 @@ enterButton.onclick = ()=>{
 }
 
 
-function gamePart(){
-  var count = 0;
-  for(var i=0;i<12;i++){
-    if(person1[i]===0 && person2[i]===0){
-      var num = i;
-      var color = 0;
-      var status = 0;
-      playerCards[count] = new addCard(num,color,status);
-      count++;
-    }
-    if(person1[i+12]===0 && person2[i+12]===0){
-      var num = i;
-      var color = 1;
-      var status = 0;
-      playerCards[count] = new addCard(num,color,status);
-      count++;
-    }
-  }
-
-  cardOutput();
 
 
-}
 
 
-function cardOutput(){
-  var message = 'プレイヤーの手持ち:';
-  for(var i=0;i<8;i++){
-    const button = document.createElement('button');
-    if(playerCards[i].color===0){
-      button.className = 'blackNot';
-    }else{
-      button.className = 'whiteNot';
-    }
-    if(playerCards[i].status === 1){
-      button.innerText = playerCards[i].num;
-    }
-    gameArea.appendChild(button);
-    switch (i) {
-      case 0:card1 = button;
-             break;
-      case 1:card2 = button;
-             break;
-      case 2:card3 = button;
-             break;
-      case 3:card4 = button;
-             break;
-      case 4:card5 = button;
-             break;
-      case 5:card6 = button;
-             break;
-      case 6:card7 = button;
-             break;
-      case 7:card8 = button;
-             break;
-    }
-    message += ' ' + playerCards[i].num;
-  }
-
-  console.log(message);
-}
 
 
-function resetCardButtonClass(){
-  countSerected = 0;
-  black0.className = 'blackNot';
-  black1.className = 'blackNot';
-  black2.className = 'blackNot';
-  black3.className = 'blackNot';
-  black4.className = 'blackNot';
-  black5.className = 'blackNot';
-  black6.className = 'blackNot';
-  black7.className = 'blackNot';
-  black8.className = 'blackNot';
-  black9.className = 'blackNot';
-  black10.className = 'blackNot';
-  black11.className = 'blackNot';
-  white0.className = 'whiteNot';
-  white1.className = 'whiteNot';
-  white2.className = 'whiteNot';
-  white3.className = 'whiteNot';
-  white4.className = 'whiteNot';
-  white5.className = 'whiteNot';
-  white6.className = 'whiteNot';
-  white7.className = 'whiteNot';
-  white8.className = 'whiteNot';
-  white9.className = 'whiteNot';
-  white10.className = 'whiteNot';
-  white11.className = 'whiteNot';
-  return;
-}
 
-function serectCardList(cardList){
-  black0.onclick = ()=>{cardList[0] = buttonOnClick(black0)};
-  black1.onclick = ()=>{cardList[1] = buttonOnClick(black1)};
-  black2.onclick = ()=>{cardList[2] = buttonOnClick(black2)};
-  black3.onclick = ()=>{cardList[3] = buttonOnClick(black3)};
-  black4.onclick = ()=>{cardList[4] = buttonOnClick(black4)};
-  black5.onclick = ()=>{cardList[5] = buttonOnClick(black5)};
-  black6.onclick = ()=>{cardList[6] = buttonOnClick(black6)};
-  black7.onclick = ()=>{cardList[7] = buttonOnClick(black7)};
-  black8.onclick = ()=>{cardList[8] = buttonOnClick(black8)};
-  black9.onclick = ()=>{cardList[9] = buttonOnClick(black9)};
-  black10.onclick = ()=>{cardList[10] = buttonOnClick(black10)};
-  black11.onclick = ()=>{cardList[11] = buttonOnClick(black11)};
-  white0.onclick = ()=>{cardList[12] = buttonOnClick(white0)};
-  white1.onclick = ()=>{cardList[13] = buttonOnClick(white1)};
-  white2.onclick = ()=>{cardList[14] = buttonOnClick(white2)};
-  white3.onclick = ()=>{cardList[15] = buttonOnClick(white3)};
-  white4.onclick = ()=>{cardList[16] = buttonOnClick(white4)};
-  white5.onclick = ()=>{cardList[17] = buttonOnClick(white5)};
-  white6.onclick = ()=>{cardList[18] = buttonOnClick(white6)};
-  white7.onclick = ()=>{cardList[19] = buttonOnClick(white7)};
-  white8.onclick = ()=>{cardList[20] = buttonOnClick(white8)};
-  white9.onclick = ()=>{cardList[21] = buttonOnClick(white9)};
-  white10.onclick = ()=>{cardList[22] = buttonOnClick(white10)};
-  white11.onclick = ()=>{cardList[23] = buttonOnClick(white11)};
-}
 
-/**
- * カードボタンが押されたときの処理
- * @param {HTMLElement} buttonName 押されたボタンの名前(？)
- * @return {number} Serectedなら1, Notなら2を返す
-*/
-function buttonOnClick(buttonName){
-  count.className = 'none';
-  switch (buttonName.className) {
-    case 'blackNot':buttonName.className = 'blackSerected';
-                    countSerected++;
-                    break;
-    case 'blackSerected':buttonName.className = 'blackNot';
-                    countSerected--;
-                    break;
-    case 'whiteNot':buttonName.className = 'whiteSerected';
-                    countSerected++;
-                    break;
-    case 'whiteSerected':buttonName.className = 'whiteNot';
-                    countSerected--;
-                    break;
-    default:console.log('Error Not<=>Serected変換 ' + buttonName.id);
-  }
-  if(countSerected===0){
-    count.innerText = '手持ちのカードを選択してください';
-  }else if(countSerected===8){
-    count.innerText = '選択したカードが合っているか確認して決定を押してください';
-  }else if(countSerected<8){
-    count.innerText = 'あと'+(8-countSerected)+'枚選択してください';
-  }else{
-    count.innerText = (countSerected-8)+'枚オーバーしています。確認し直してください';
-  }
 
-  if(buttonName.className=='blackSerected' || buttonName.className=='whiteSerected'){
-    return 1;
-  }else{
-    return 0;
-  }
-}
+
+
+
 
 /**
  * 指定した要素の子要素をすべて削除する
