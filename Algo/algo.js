@@ -293,7 +293,8 @@ enterButton.onclick = ()=>{
         console.log(message2);
         for(var i=0;i<24;i++){
           if(person1[i]===1 && person2[i]===1){
-            alert('Error 重複がありました。リロードして１人目のプレイヤーの入力からやり直してください');
+            alert('重複がありました。リロードして１人目のプレイヤーの入力からやり直してください');
+            removeAllChildren(gameArea);
             break;
           }
         }
