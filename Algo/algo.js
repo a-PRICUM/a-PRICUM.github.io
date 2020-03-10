@@ -36,7 +36,7 @@ for(var i=0;i<24;i++){
 }
 var countSerected = 0;
 var player = [];//black0~11,white0~11 1->Serected
-var playerCards=[0,0,0,0,0,0,0,0];
+
 
 
 
@@ -135,88 +135,134 @@ var cardSerect = {
 }
 
 var gamePart = {
+  playerCards:[0,0,0,0,0,0,0,0],
   start:function (){
     var count = 0;
     for(var i=0;i<12;i++){
       if(person1[i]===0 && person2[i]===0){
         var num = i;
         var color = 0;
-        var status = 0;
-        playerCards[count] = new this.makeCardObject(num,color,status);
+        this.playerCards[count] = new this.makeCardObject(num,color);
         count++;
       }
       if(person1[i+12]===0 && person2[i+12]===0){
         var num = i;
         var color = 1;
-        var status = 0;
-        playerCards[count] = new this.makeCardObject(num,color,status);
+        this.playerCards[count] = new this.makeCardObject(num,color);
         count++;
       }
     }
 
+
     this.cardOutput();
-    console.log(playerCards[0].element.className);
+    var message = 'プレイヤー手札:';
+    for(var i=0;i<8;i++){
+      message += ' ' + this.playerCards[i].num;
+    }
+    console.log(message);
     this.inputOnclickFunc();
   },
-  makeCardObject:function (_num, _color,_status) {
+  makeCardObject:function (_num, _color) {
             this.element = null;
             this.num = _num;
             this.color = _color;//0->black 1->white
-            this.status = _status;//0->close 1->open
   },
   cardOutput:function (){
+    const h2 = document.createElement('h2');
+    h2.innerText = 'アタック！！！';
+    cardArea.appendChild(h2);
     var message = 'プレイヤーの手持ち:';
     for(var i=0;i<8;i++){
       const button = document.createElement('button');
-      if(playerCards[i].color===0){
+      if(this.playerCards[i].color===0){
         button.className = 'blackNot';
       }else{
         button.className = 'whiteNot';
       }
-      if(playerCards[i].status === 1){
-        button.innerText = playerCards[i].num;
-      }
       cardArea.appendChild(button);
-      playerCards[i].element = button;
+      this.playerCards[i].element = button;
 
     }
   },
   cardButtonOnclick:function (num){
     var status = 0;
-    switch (playerCards[num].element.className){
-      case 'blackNot':playerCards[num].element.className = 'blackSerected';
+    switch (this.playerCards[num].element.className){
+      case 'blackNot':this.playerCards[num].element.className = 'blackSerected';
                       status = 1;
                       break;
-      case 'whiteNot':playerCards[num].element.className = 'whiteSerected';
+      case 'whiteNot':this.playerCards[num].element.className = 'whiteSerected';
                       status = 1;
                       break;
-      case 'blackSerected':playerCards[num].element.className = 'blackNot';
+      case 'blackSerected':this.playerCards[num].element.className = 'blackNot';
                       break;
-      case 'whiteSerected':playerCards[num].element.className = 'whiteNot';
+      case 'whiteSerected':this.playerCards[num].element.className = 'whiteNot';
                       break;
-      default:console.log('Error Not<=>Serected変換 ' + playerCards[num].element.id);
+      default:console.log('Error Not<=>Serected変換 ' + this.playerCards[num].element.id);
     }
     for(var i=0;i<8;i++){
       if(i != num){
-        if(playerCards[i].color === 0){
-          console.log( i + ':'+num+playerCards[i].element.className);
+        if(this.playerCards[i].color === 0){
+          this.playerCards[i].element.className = 'blackNot';
         }else{
-          console.log(i + ':' +num+playerCards[i].element.className);
+          this.playerCards[i].element.className = 'whiteNot';
         }
       }
     }
-    //TODO message
+    removeAllChildren(messageArea);
+    if(status===1){
+      const text = document.createElement('h4');
+      text.innerText = 'このカードの数字は？';
+      messageArea.appendChild(text);
+      const input = document.createElement('input');
+      input.setAttribute('type','text');
+      input.setAttribute('maxlength','2');
+      messageArea.appendChild(input);
+      const enter = document.createElement('button');
+      enter.innerText = '決定';
+      messageArea.appendChild(enter);
+      const message = document.createElement('p');
+      messageArea.appendChild(message);
+      enter.onclick = ()=>{
+        const guess = input.value;
+        if(guess.length === 0){//空の時処理を終了させる
+          return;
+        }
+        if(this.playerCards[num].num == guess){
+          this.playerCards[num].element.innerText = this.playerCards[num].num;
+          message.innerText = 'アタック成功！！';
+          message.classReset;
+          this.playerCards[num].element.onclick = ()=>{
+            for(var i=0;i<8;i++){
+              if(this.playerCards[i].color === 0){
+                this.playerCards[i].element.className = 'blackNot';
+              }else{
+                this.playerCards[i].element.className = 'whiteNot';
+              }
+              removeAllChildren(messageArea);
+            }
+          return;}
+        }else{
+          message.innerText = 'アタック失敗！！';
+          message.className = 'error';
+        }
+      }
+      input.onkeydown = (event) => {
+        if (event.key === 'Enter') {
+          enter.onclick();
+        }
+      };
+    }
     return;
   },
   inputOnclickFunc:function(){
-    playerCards[0].element.onclick = ()=>{this.cardButtonOnclick(0);};
-    playerCards[1].element.onclick = ()=>{this.cardButtonOnclick(1);};
-    playerCards[2].element.onclick = ()=>{this.cardButtonOnclick(2);};
-    playerCards[3].element.onclick = ()=>{this.cardButtonOnclick(3);};
-    playerCards[4].element.onclick = ()=>{this.cardButtonOnclick(4);};
-    playerCards[5].element.onclick = ()=>{this.cardButtonOnclick(5);};
-    playerCards[6].element.onclick = ()=>{this.cardButtonOnclick(6);};
-    playerCards[7].element.onclick = ()=>{this.cardButtonOnclick(7);};
+    this.playerCards[0].element.onclick = ()=>{this.cardButtonOnclick(0);};
+    this.playerCards[1].element.onclick = ()=>{this.cardButtonOnclick(1);};
+    this.playerCards[2].element.onclick = ()=>{this.cardButtonOnclick(2);};
+    this.playerCards[3].element.onclick = ()=>{this.cardButtonOnclick(3);};
+    this.playerCards[4].element.onclick = ()=>{this.cardButtonOnclick(4);};
+    this.playerCards[5].element.onclick = ()=>{this.cardButtonOnclick(5);};
+    this.playerCards[6].element.onclick = ()=>{this.cardButtonOnclick(6);};
+    this.playerCards[7].element.onclick = ()=>{this.cardButtonOnclick(7);};
   },
   clear:function(){
     removeAllChildren(cardArea);
