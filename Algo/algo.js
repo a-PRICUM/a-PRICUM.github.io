@@ -230,7 +230,7 @@ var gamePart = {
         if(this.playerCards[num].num == guess){
           this.playerCards[num].element.innerText = this.playerCards[num].num;
           message.innerText = 'アタック成功！！';
-          message.classReset;
+          message.className = 'none';
           this.playerCards[num].element.onclick = ()=>{
             for(var i=0;i<8;i++){
               if(this.playerCards[i].color === 0){
@@ -242,6 +242,7 @@ var gamePart = {
             }
           return;}
         }else{
+          input.value = null;
           message.innerText = 'アタック失敗！！';
           message.className = 'error';
         }
