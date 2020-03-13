@@ -222,12 +222,15 @@ var gamePart = {
       messageArea.appendChild(enter);
       const message = document.createElement('p');
       messageArea.appendChild(message);
+
       enter.onclick = ()=>{
         const guess = input.value;
         if(guess.length === 0){//空の時処理を終了させる
           return;
         }
         if(this.playerCards[num].num == guess){
+          messageArea.removeChild(input);
+          messageArea.removeChild(enter);
           this.playerCards[num].element.innerText = this.playerCards[num].num;
           message.innerText = 'アタック成功！！';
           message.className = 'none';
@@ -240,7 +243,7 @@ var gamePart = {
               }
               removeAllChildren(messageArea);
             }
-          return;}
+          }
         }else{
           input.value = null;
           message.innerText = 'アタック失敗！！';
